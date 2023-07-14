@@ -3,6 +3,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import Books from "../pages/Books";
+import Login from "../pages/Login";
 
 const routes = createBrowserRouter([
   {
@@ -31,10 +32,10 @@ const routes = createBrowserRouter([
       //   },
     ],
   },
-  //   {
-  //     path: '/login',
-  //     element: <Login />,
-  //   },
+  {
+    path: "/login",
+    element: <Login />,
+  },
   //   {
   //     path: '/signup',
   //     element: <Signup />,

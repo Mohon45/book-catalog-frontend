@@ -12,7 +12,7 @@ const Navbar = () => {
               alt="Flowbite Logo"
             />
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-              Flowbite
+              Book Catalog
             </span>
           </Link>
           <div className="flex items-center md:order-2">
@@ -31,46 +31,32 @@ const Navbar = () => {
             </button>
             {/* Dropdown menu  */}
             <div
-              className="z-50 hidden my-4 text-base list-none bg-red-500 divide-y divide-gray-100 rounded-lg shadow"
+              className="w-[200px] z-50 hidden my-4 text-base list-none divide-y bg-[#0F15A2] text-white divide-gray-100 rounded-lg shadow"
               id="user-dropdown"
             >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-red-700">Bonnie Green</span>
-                <span className="block text-sm  text-gray-500 truncate">
-                  name@flowbite.com
-                </span>
-              </div>
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
                   <Link
                     to="/"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
                   >
-                    Dashboard
+                    Sign Up
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/login"
+                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
+                  >
+                    Login
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
                   >
-                    Settings
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Earnings
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Sign out
+                    Log out
                   </Link>
                 </li>
               </ul>
