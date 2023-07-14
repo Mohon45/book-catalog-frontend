@@ -116,10 +116,10 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/books"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
-                  About
+                  All Books
                 </Link>
               </li>
               <li>
@@ -127,23 +127,7 @@ const Navbar = () => {
                   to="#"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
-                >
-                  Contact
+                  Add a New Book
                 </Link>
               </li>
             </ul>
