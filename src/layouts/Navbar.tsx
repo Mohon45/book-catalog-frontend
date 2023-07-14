@@ -6,11 +6,6 @@ const Navbar = () => {
       <nav className="bg-[#0F15A2] border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 py-6">
           <Link to="/" className="flex items-center">
-            <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              className="h-8 mr-3"
-              alt="Flowbite Logo"
-            />
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               Book Catalog
             </span>
