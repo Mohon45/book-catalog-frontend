@@ -1,13 +1,41 @@
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Link, useNavigate } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
 import login from "../assets/login.png";
+import { IUser } from "../type/globalTypes";
+import { useAppDispatch } from "../redux/hook";
+import { useCreateUserMutation } from "../redux/user/userApi";
+
 const SignUp = () => {
+  const { register, handleSubmit } = useForm<IUser>();
+  const [createUser, { isLoading, isError, isSuccess }] =
+    useCreateUserMutation();
+  const navigate = useNavigate();
+  if (isSuccess) {
+    navigate("/login");
+  }
+  const onSubmitHandler = async (data: IUser) => {
+    console.log(data);
+    await createUser({
+      name: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      },
+      userName: data.userName,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      password: data.password,
+      gender: data.gender,
+      address: data.address,
+    });
+  };
   return (
     <div className="flex items-center">
       <div>
         <img src={login} className="w-[90%]" alt="" />
       </div>
 
-      <form className="">
+      <form onSubmit={handleSubmit(onSubmitHandler)} className="">
         <h5 className="text-xl font-medium text-gray-900 my-10">
           Login to Book Catalog
         </h5>
@@ -22,6 +50,7 @@ const SignUp = () => {
             <input
               type="text"
               id="first_name"
+              {...register("firstName", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             />
@@ -36,6 +65,7 @@ const SignUp = () => {
             <input
               type="text"
               id="last_name"
+              {...register("lastName", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             />
@@ -50,6 +80,7 @@ const SignUp = () => {
             <input
               type="text"
               id="userName"
+              {...register("userName", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             />
@@ -65,8 +96,7 @@ const SignUp = () => {
               type="tel"
               id="phone"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="123-45-678"
-              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+              {...register("phoneNumber", { required: true })}
               required
             />
           </div>
@@ -80,6 +110,7 @@ const SignUp = () => {
             <input
               type="email"
               id="email"
+              {...register("email", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             />
@@ -93,29 +124,45 @@ const SignUp = () => {
             </label>
             <select
               id="gender"
+              {...register("gender", { required: true })}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option selected>Choose a country</option>
+              <option selected>Choose a Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
           </div>
-        </div>
-
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="•••••••••"
-            required
-          />
+          <div className="mb-6">
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              {...register("password", { required: true })}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="•••••••••"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="address"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              {...register("address", { required: true })}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+            />
+          </div>
         </div>
 
         <div className="text-sm font-medium text-gray-500 mb-4">
