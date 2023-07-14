@@ -1,10 +1,11 @@
 import "flowbite";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <div className="">
       <nav className="bg-[#0F15A2] border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 py-6">
-          <a href="#" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               className="h-8 mr-3"
@@ -13,7 +14,7 @@ const Navbar = () => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               Flowbite
             </span>
-          </a>
+          </Link>
           <div className="flex items-center md:order-2">
             <button
               type="button"
@@ -41,36 +42,36 @@ const Navbar = () => {
               </div>
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Dashboard
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Earnings
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Sign out
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -105,45 +106,45 @@ const Navbar = () => {
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                   aria-current="page"
                 >
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
                   About
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
                   Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="#"
                   className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

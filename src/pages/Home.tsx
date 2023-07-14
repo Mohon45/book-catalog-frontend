@@ -37,9 +37,7 @@ const Home = () => {
         </h1>
         <hr className="w-[320px] mx-auto border-2 border-[#0F15A2]" />
 
-        <div className="grid grid-cols-2 gap-5 mx-auto my-8">
-          <HomeBookCard />
-          <HomeBookCard />
+        <div className="">
           <HomeBookCard />
         </div>
       </div>
