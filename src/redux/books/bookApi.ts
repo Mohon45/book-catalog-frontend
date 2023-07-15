@@ -4,7 +4,7 @@ import { api } from "../api/apiSlice";
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: (searchTerm) => `/book?${searchTerm}`,
+      query: () => "/book",
       providesTags: ["books"],
     }),
     // singleProduct: builder.query({

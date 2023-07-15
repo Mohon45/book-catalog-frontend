@@ -10,7 +10,7 @@ interface IBookFilter {
 const initialState: IBookFilter = {
   searchTerm: "",
   genre: "",
-  publicationYear: 2023,
+  publicationYear: null,
 };
 
 const bookSlice = createSlice({
@@ -23,12 +23,12 @@ const bookSlice = createSlice({
     // toggleState: (state) => {
     //   state.status = !state.status;
     // },
-    // setPriceRange: (state, action: PayloadAction<number>) => {
-    //   state.priceRange = action.payload;
-    // },
+    setPublicationYear: (state, action: PayloadAction<number>) => {
+      state.publicationYear = action.payload;
+    },
   },
 });
 
-export const { setSearchTerm } = bookSlice.actions;
+export const { setSearchTerm, setPublicationYear } = bookSlice.actions;
 
 export default bookSlice.reducer;

@@ -1,15 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LoadingOverlay from "react-loading-overlay";
 import { useGetBooksQuery } from "../redux/books/bookApi";
+import { setSearchTerm, setPublicationYear } from "../redux/books/bookSlice";
 import { IBook } from "../type/globalTypes";
 import BookCard from "../components/BookCard";
-import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 
 const Books = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const years = Array.from({ length: 50 }, (_, index) => 2023 - index);
+  const { data, isLoading, error } = useGetBooksQuery(undefined);
 
-  const { data, isLoading, error } = useGetBooksQuery(searchTerm);
+  const { searchTerm, publicationYear } = useAppSelector((state) => state.book);
+  const dispatch = useAppDispatch();
+  let filtedData = null;
+  if (searchTerm !== "") {
+    const searchMatch = data?.data.filter(
+      (book) =>
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    filtedData = searchMatch;
+  } else if (publicationYear) {
+    const yearMatch = data?.data.filter(
+      (book) => book.publicationYear === publicationYear
+    );
+    filtedData = yearMatch;
+  } else {
+    filtedData = data?.data;
+  }
 
   return (
     <LoadingOverlay active={isLoading}>
@@ -45,7 +68,7 @@ const Books = () => {
                   type="search"
                   id="search"
                   className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => dispatch(setSearchTerm(e.target.value))}
                   placeholder="Search"
                 />
               </div>
@@ -61,7 +84,7 @@ const Books = () => {
                 <select
                   id="years"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => console.log(e.target.value)}
+                  onChange={(e) => dispatch(setPublicationYear(e.target.value))}
                 >
                   <option selected>Choose a Year</option>
                   {years.map((year) => (
@@ -90,7 +113,7 @@ const Books = () => {
           </div>
         </div>
         <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-          {data?.data?.map((book: IBook) => (
+          {filtedData?.map((book: IBook) => (
             <BookCard book={book} />
           ))}
         </div>

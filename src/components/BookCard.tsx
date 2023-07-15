@@ -16,10 +16,10 @@ const BookCard = ({ book }) => {
           </a>
           <div>
             <h1 className="text-xl">
-              Author : <span className="font-semibold">Md. Mohon</span>
+              Author : <span className="font-semibold">{book.author}</span>
             </h1>
             <div className="flex justify-between text-sm mt-2">
-              <p>Genre : Nature</p>
+              <p>Genre : {book.genre}</p>
               <p>Publication Year : 2023</p>
             </div>
           </div>
