@@ -10,3 +10,13 @@ export interface IUser {
   password: string;
   address: string;
 }
+
+export interface IBook {
+  _id: number;
+  author: string;
+  image: string;
+  title: number;
+  genre: string;
+  publicationDate: string;
+  revies?: string[];
+}
