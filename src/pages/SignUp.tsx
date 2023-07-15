@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Link, useNavigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import login from "../assets/login.png";
 import { IUser } from "../type/globalTypes";
-import { useAppDispatch } from "../redux/hook";
 import { useCreateUserMutation } from "../redux/user/userApi";
-import { useState } from "react";
-import Loader from "../components/Loader";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const { register, handleSubmit } = useForm<IUser>();
@@ -15,10 +13,10 @@ const SignUp = () => {
     useCreateUserMutation();
   const navigate = useNavigate();
   if (isSuccess) {
+    toast.success("User sign Up Successfully!");
     navigate("/login");
   }
   const onSubmitHandler = async (data: IUser) => {
-    console.log(data);
     await createUser({
       name: {
         firstName: data.firstName,
