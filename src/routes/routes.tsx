@@ -19,6 +19,14 @@ const routes = createBrowserRouter([
         path: "/books",
         element: <Books />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
       //   {
       //     path: '/product-details/:id',
       //     element: <ProductDetails />,
@@ -33,14 +41,7 @@ const routes = createBrowserRouter([
       //   },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
+
   {
     path: "*",
     element: <NotFound />,

@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import "flowbite";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const Navbar = () => {
+  const userName = cookies.get("userName");
   return (
     <div className="">
       <nav className="bg-[#0F15A2] border-gray-200">
@@ -21,7 +26,9 @@ const Navbar = () => {
             >
               <span className="sr-only">Open user menu</span>
               <div className="relative inline-flex items-center justify-center w-10 h-10 p-4 overflow-hidden bg-gray-100 rounded-full  ring-2 ring-gray-300">
-                <span className="font-medium text-xl text-gray-600">Md</span>
+                <span className="font-medium text-xl text-gray-600">
+                  {userName ? <>{userName.slice(0, 1)}</> : <></>}
+                </span>
               </div>
             </button>
             {/* Dropdown menu  */}
@@ -30,30 +37,35 @@ const Navbar = () => {
               id="user-dropdown"
             >
               <ul className="py-2" aria-labelledby="user-menu-button">
-                <li>
-                  <Link
-                    to="/"
-                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
-                  >
-                    Sign Up
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/login"
-                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
-                  >
-                    Log out
-                  </Link>
-                </li>
+                {!userName ? (
+                  <>
+                    <li>
+                      <Link
+                        to="/signup"
+                        className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
+                      >
+                        Sign Up
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
+                      >
+                        Login
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <Link
+                      to="#"
+                      className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
+                    >
+                      Log out
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
             <button
@@ -103,14 +115,18 @@ const Navbar = () => {
                   All Books
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="#"
-                  className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
-                >
-                  Add a New Book
-                </Link>
-              </li>
+              {userName ? (
+                <>
+                  <li>
+                    <Link
+                      to="#"
+                      className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
+                    >
+                      Add a New Book
+                    </Link>
+                  </li>
+                </>
+              ) : null}
             </ul>
           </div>
         </div>
