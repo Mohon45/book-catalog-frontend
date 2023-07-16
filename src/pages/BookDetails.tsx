@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import defaltImage from "../assets/no-image.jpeg";
 import {
   useBookReviewMutation,
+  useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/books/bookApi";
 import { useEffect, useState } from "react";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 import Cookies from "universal-cookie";
+import DeleteAlert from "../components/DeleteAlert";
 const cookies = new Cookies();
 const userId = cookies.get("id");
 
@@ -16,15 +18,17 @@ const BookDetails = () => {
   const [bookDetails, setBookDetails] = useState({});
   const [userReview, serUserReview] = useState("");
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data, isLoading, error } = useGetSingleBookQuery(id, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 1000,
   });
+  const [bookReview, options] = useBookReviewMutation();
+  const [deleteBook, op] = useDeleteBookMutation();
 
   useEffect(() => {
     setBookDetails(data?.data);
   }, [data?.data]);
-  const [bookReview, options] = useBookReviewMutation();
 
   const onReviewHandler = async (e) => {
     e.preventDefault();
@@ -33,6 +37,16 @@ const BookDetails = () => {
       data: { reviews: userReview },
     };
     await bookReview(option);
+  };
+
+  const onDeleteHandler = (id) => {
+    DeleteAlert(() => handleDelete(id));
+  };
+  const handleDelete = async (id) => {
+    const result = await deleteBook(id);
+    if (result?.data?.success) {
+      navigate("/books");
+    }
   };
 
   return (
@@ -67,6 +81,7 @@ const BookDetails = () => {
                 <button
                   type="button"
                   className="text-white px-8 bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm py-2.5 text-center mr-2 mb-2"
+                  onClick={() => onDeleteHandler(bookDetails?._id)}
                 >
                   Delete
                 </button>
