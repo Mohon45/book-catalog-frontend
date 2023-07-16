@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { api } from "../api/apiSlice";
 
@@ -7,22 +8,40 @@ const bookApi = api.injectEndpoints({
       query: () => "/book",
       providesTags: ["books"],
     }),
-    // singleProduct: builder.query({
-    //   query: (id) => `/product/${id}`,
-    // }),
-    // postComment: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/comment/${id}`,
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ['comments'],
-    // }),
-    // getComment: builder.query({
-    //   query: (id) => `/comment/${id}`,
-    //   providesTags: ['comments'],
-    // }),
+    getSingleBook: builder.query({
+      query: (id) => `/book/${id}`,
+    }),
+    createBook: builder.mutation({
+      query: (data) => ({
+        url: "/book/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["books"],
+    }),
+    updateBook: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `book/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["books"],
+    }),
+    bookReview: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `book/review/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["books"],
+    }),
   }),
 });
 
-export const { useGetBooksQuery } = bookApi;
+export const {
+  useGetBooksQuery,
+  useGetSingleBookQuery,
+  useCreateBookMutation,
+  useUpdateBookMutation,
+  useBookReviewMutation,
+} = bookApi;

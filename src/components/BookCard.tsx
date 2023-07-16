@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { Link } from "react-router-dom";
@@ -24,11 +25,16 @@ const BookCard = ({ book }) => {
           </Link>
           <div>
             <h1 className="text-xl">
-              Author : <span className="font-semibold">{book.author}</span>
+              Author :{" "}
+              <span className="font-semibold">
+                {book?.author?.name?.firstName +
+                  " " +
+                  book?.author?.name?.lastName}
+              </span>
             </h1>
-            <div className="flex justify-between text-sm mt-2">
+            <div className=" text-sm mt-2">
               <p>Genre : {book.genre}</p>
-              <p>Publication Year : 2023</p>
+              <p className="mt-2">Publication Date : {book?.publicationDate}</p>
             </div>
           </div>
           <div className="">

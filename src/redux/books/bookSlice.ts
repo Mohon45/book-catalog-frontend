@@ -20,15 +20,16 @@ const bookSlice = createSlice({
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
     },
-    // toggleState: (state) => {
-    //   state.status = !state.status;
-    // },
     setPublicationYear: (state, action: PayloadAction<number>) => {
       state.publicationYear = action.payload;
+    },
+    setGenre: (state, action: PayloadAction<string>) => {
+      state.genre = action.payload;
     },
   },
 });
 
-export const { setSearchTerm, setPublicationYear } = bookSlice.actions;
+export const { setSearchTerm, setPublicationYear, setGenre } =
+  bookSlice.actions;
 
 export default bookSlice.reducer;

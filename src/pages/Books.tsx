@@ -5,7 +5,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LoadingOverlay from "react-loading-overlay";
 import { useGetBooksQuery } from "../redux/books/bookApi";
-import { setSearchTerm, setPublicationYear } from "../redux/books/bookSlice";
+import {
+  setSearchTerm,
+  setPublicationYear,
+  setGenre,
+} from "../redux/books/bookSlice";
 import { IBook } from "../type/globalTypes";
 import BookCard from "../components/BookCard";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
@@ -14,22 +18,40 @@ const Books = () => {
   const years = Array.from({ length: 50 }, (_, index) => 2023 - index);
   const { data, isLoading, error } = useGetBooksQuery(undefined);
 
-  const { searchTerm, publicationYear } = useAppSelector((state) => state.book);
+  const { searchTerm, publicationYear, genre } = useAppSelector(
+    (state) => state.book
+  );
   const dispatch = useAppDispatch();
   let filtedData = null;
   if (searchTerm !== "") {
     const searchMatch = data?.data.filter(
       (book) =>
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+        book?.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+        book?.author?.name?.firsName
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        book?.author?.name?.lastName
+          ?.toLowerCase()
+          .includes(searchTerm?.toLowerCase()) ||
+        book?.genre?.toLowerCase().includes(searchTerm?.toLowerCase())
     );
     filtedData = searchMatch;
-  } else if (publicationYear) {
-    const yearMatch = data?.data.filter(
-      (book) => book.publicationYear === publicationYear
-    );
-    filtedData = yearMatch;
+  } else {
+    filtedData = data?.data;
+  }
+
+  if (publicationYear || genre) {
+    const filterData = data?.data.filter((book) => {
+      const genreMatch = book?.genre
+        ?.toLowerCase()
+        .includes(genre?.toLowerCase());
+      const yearMatch = book?.publicationDate
+        .split("-")[0]
+        .includes(publicationYear);
+      return genreMatch && yearMatch;
+    });
+    console.log(filterData);
+    filtedData = filterData;
   } else {
     filtedData = data?.data;
   }
@@ -86,7 +108,9 @@ const Books = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) => dispatch(setPublicationYear(e.target.value))}
                 >
-                  <option selected>Choose a Year</option>
+                  <option value="" selected>
+                    Choose a Year
+                  </option>
                   {years.map((year) => (
                     <option value={year}>{year}</option>
                   ))}
@@ -103,9 +127,11 @@ const Books = () => {
                 <select
                   id="genre"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => console.log(e.target.value)}
+                  onChange={(e) => dispatch(setGenre(e.target.value))}
                 >
-                  <option selected>Choose a Genre</option>
+                  <option value="" selected>
+                    Choose a Genre
+                  </option>
                   <option value="nature">Nature</option>
                 </select>
               </div>
