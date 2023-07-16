@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import "flowbite";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const Navbar = () => {
-  const userName = cookies.get("userName");
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    setInterval(() => {
+      setUserName(cookies.get("userName"));
+    }, 500);
+  }, []);
   return (
     <div className="">
       <nav className="bg-[#0F15A2] border-gray-200">
@@ -119,7 +125,7 @@ const Navbar = () => {
                 <>
                   <li>
                     <Link
-                      to="#"
+                      to="/add-book"
                       className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                     >
                       Add a New Book

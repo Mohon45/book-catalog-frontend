@@ -18,7 +18,7 @@ const Login = () => {
   if (isSuccess) {
     navigate("/");
   }
-  const onSubmitHandler = async (data: ILogin): IU => {
+  const onSubmitHandler = async (data: ILogin) => {
     const result = await loginUser({
       userName: data.userName,
       password: data.password,
