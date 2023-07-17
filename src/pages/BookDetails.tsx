@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import defaltImage from "../assets/no-image.jpeg";
 import {
   useBookReviewMutation,
@@ -12,11 +12,11 @@ import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 import Cookies from "universal-cookie";
 import DeleteAlert from "../components/DeleteAlert";
 const cookies = new Cookies();
-const userId = cookies.get("id");
 
 const BookDetails = () => {
   const [bookDetails, setBookDetails] = useState({});
   const [userReview, serUserReview] = useState("");
+  const [userId, setUserId] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetSingleBookQuery(id, {
@@ -27,6 +27,9 @@ const BookDetails = () => {
   const [deleteBook, op] = useDeleteBookMutation();
 
   useEffect(() => {
+    setInterval(() => {
+      setUserId(cookies.get("id"));
+    }, 500);
     setBookDetails(data?.data);
   }, [data?.data]);
 
@@ -37,6 +40,7 @@ const BookDetails = () => {
       data: { reviews: userReview },
     };
     await bookReview(option);
+    e.target.reset();
   };
 
   const onDeleteHandler = (id) => {
@@ -72,12 +76,15 @@ const BookDetails = () => {
             </div>
             {bookDetails?.author?._id === userId ? (
               <div>
-                <button
-                  type="button"
-                  className="text-white px-8 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm py-2.5 text-center mr-2 mb-2"
-                >
-                  Edit
-                </button>
+                <Link to={`/update/${bookDetails?._id}`}>
+                  <button
+                    type="button"
+                    className="text-white px-8 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm py-2.5 text-center mr-2 mb-2"
+                  >
+                    Edit
+                  </button>
+                </Link>
+
                 <button
                   type="button"
                   className="text-white px-8 bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm py-2.5 text-center mr-2 mb-2"
