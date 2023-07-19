@@ -1,21 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import { useForm } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useCreateBookMutation,
   useGetSingleBookQuery,
+  useUpdateBookMutation,
 } from "../redux/books/bookApi";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 
 const UpdateBook = () => {
-  const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(true);
   const [book, setBook] = useState({});
+  const [title, setTitle] = useState("");
+  const [genre, setGenre] = useState("");
+  const [publicationDate, setPublicationDate] = useState(null);
 
   interface INewBook {
     title: string;
@@ -24,31 +28,51 @@ const UpdateBook = () => {
     publicationDate: string;
   }
   const { id } = useParams();
-  const { register, handleSubmit } = useForm<INewBook>();
   const { data, isLoading, error } = useGetSingleBookQuery(id);
-  //   const [createBook, { isLoading, isError, isSuccess }] =
-  //     useCreateBookMutation();
+  const [createBook, option] = useUpdateBookMutation();
   const navigate = useNavigate();
-  //   if (isSuccess) {
-  //     navigate("/books");
-  //   }
   useEffect(() => {
     setBook(data?.data);
-  }, [data?.data]);
-
-  const onSubmitHandler = async (data) => {
-    if (date) {
-      data["publicationDate"] = date;
+    setLoading(isLoading);
+    if (book) {
+      setTitle(book?.title);
+      setGenre(book?.genre);
+      setPublicationDate(book?.publicationDate);
     }
-    console.log(data);
-    // await createBook(data);
+  }, [data?.data, book]);
+  const onChangeHandler = (e) => {
+    if (e.target.name === "title") {
+      setTitle(e.target.value);
+    }
+    if (e.target.name === "genre") {
+      setGenre(e.target.value);
+    }
   };
-  console.log(book);
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const updatedData = {
+      title: title,
+      genre: genre,
+      publicationDate: publicationDate,
+    };
+    const option = {
+      id: id,
+      data: updatedData,
+    };
+    const result = await createBook(option);
+
+    console.log(result);
+    if (result?.data?.success) {
+      setLoading(false);
+      navigate("/books");
+    }
+  };
   return (
-    <LoadingOverlay active={false}>
+    <LoadingOverlay active={loading}>
       <div className="w-[500px] mx-auto">
         <div className="w-full mx-auto max-w-sm p-4 mt-4 mb-8 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmitHandler)}>
+          <form className="space-y-6" onSubmit={onSubmitHandler}>
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
               Update a Book
             </h5>
@@ -62,8 +86,9 @@ const UpdateBook = () => {
               <input
                 type="text"
                 id="title"
-                value={book?.title}
-                {...register("title", { required: true })}
+                name="title"
+                onChange={onChangeHandler}
+                value={title}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 required
               />
@@ -77,8 +102,10 @@ const UpdateBook = () => {
               </label>
               <select
                 id="genre"
+                name="genre"
+                onChange={onChangeHandler}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                {...register("genre", { required: true })}
+                value={genre}
               >
                 <option selected>Choose a Genre</option>
                 <option value="programming">Programming</option>
@@ -99,13 +126,21 @@ const UpdateBook = () => {
               <DatePicker
                 id="publicastionDate"
                 className="w-[320px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                selected={(date && new Date(date)) || null}
+                selected={
+                  publicationDate !== undefined
+                    ? new Date(publicationDate)
+                    : null
+                }
                 peekNextMonth
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select"
                 onChange={(date) => {
-                  setDate(date?.toISOString().split("T")[0]);
+                  if (data !== null) {
+                    setPublicationDate(date?.toISOString().split("T")[0]);
+                  } else {
+                    setPublicationDate("");
+                  }
                 }}
               />
             </div>
