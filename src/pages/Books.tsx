@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -23,6 +24,17 @@ const Books = () => {
   );
   const dispatch = useAppDispatch();
   let filtedData = null;
+  const onSearchHandler = (e) => {
+    if (e.target.name === "search") {
+      dispatch(setSearchTerm(e.target.value));
+    }
+    if (e.target.name === "year") {
+      dispatch(setPublicationYear(e.target.value));
+    }
+    if (e.target.name === "genre") {
+      dispatch(setGenre(e.target.value));
+    }
+  };
   if (searchTerm !== "") {
     const searchMatch = data?.data.filter(
       (book) =>
@@ -50,10 +62,7 @@ const Books = () => {
         .includes(publicationYear);
       return genreMatch && yearMatch;
     });
-    console.log(filterData);
     filtedData = filterData;
-  } else {
-    filtedData = data?.data;
   }
 
   return (
@@ -90,7 +99,8 @@ const Books = () => {
                   type="search"
                   id="search"
                   className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+                  name="search"
+                  onChange={onSearchHandler}
                   placeholder="Search"
                 />
               </div>
@@ -106,7 +116,8 @@ const Books = () => {
                 <select
                   id="years"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => dispatch(setPublicationYear(e.target.value))}
+                  name="year"
+                  onChange={onSearchHandler}
                 >
                   <option value="" selected>
                     Choose a Year
@@ -116,7 +127,6 @@ const Books = () => {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label
                   htmlFor="genre"
@@ -127,12 +137,17 @@ const Books = () => {
                 <select
                   id="genre"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => dispatch(setGenre(e.target.value))}
+                  name="genre"
+                  onChange={onSearchHandler}
                 >
                   <option value="" selected>
                     Choose a Genre
                   </option>
+                  <option value="programming">Programming</option>
                   <option value="nature">Nature</option>
+                  <option value="travel">Travel</option>
+                  <option value="genarel">Grnarel</option>
+                  <option value="gossiping">Gossiping</option>
                 </select>
               </div>
             </div>

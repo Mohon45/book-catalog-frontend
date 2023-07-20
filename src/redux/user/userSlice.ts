@@ -29,15 +29,24 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const userData = action.payload;
+      const userData = action?.payload;
       cookies.set("userName", userData.userName, { path: "/" });
       cookies.set("id", userData._id, { path: "/" });
       cookies.set("email", userData.email, { path: "/" });
-      state.user = action.payload;
+      state.user = action?.payload;
+    },
+    removeUser: (state) => {
+      state.user = {
+        userName: null,
+        email: null,
+        _id: null,
+        accessToken: null,
+        refreshToken: null,
+      };
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, removeUser } = userSlice.actions;
 
 export default userSlice.reducer;

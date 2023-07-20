@@ -8,6 +8,7 @@ import {
   useGetSingleBookQuery,
 } from "../redux/books/bookApi";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 import Cookies from "universal-cookie";
 import DeleteAlert from "../components/DeleteAlert";
@@ -39,7 +40,10 @@ const BookDetails = () => {
       id: id,
       data: { reviews: userReview },
     };
-    await bookReview(option);
+    const result = await bookReview(option);
+    if (result?.data?.success) {
+      toast.success("Book Review Success!");
+    }
     e.target.reset();
   };
 
@@ -49,6 +53,7 @@ const BookDetails = () => {
   const handleDelete = async (id) => {
     const result = await deleteBook(id);
     if (result?.data?.success) {
+      toast.success("Book delete Success!");
       navigate("/books");
     }
   };

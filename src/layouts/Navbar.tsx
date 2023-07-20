@@ -1,17 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import "flowbite";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { toast } from "react-toastify";
+import { useAppDispatch } from "../redux/hook";
+import { removeUser } from "../redux/user/userSlice";
 const cookies = new Cookies();
 const Navbar = () => {
   const [userName, setUserName] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     setInterval(() => {
       setUserName(cookies.get("userName"));
     }, 500);
   }, []);
+
+  const logOutHandler = () => {
+    dispatch(removeUser());
+    cookies.remove("userName", { path: "/" });
+    cookies.remove("id", { path: "/" });
+    cookies.remove("email", { path: "/" });
+    toast.success("Log Out Success");
+    navigate("/");
+  };
   return (
     <div className="">
       <nav className="bg-[#0F15A2] border-gray-200">
@@ -65,8 +80,9 @@ const Navbar = () => {
                 ) : (
                   <li>
                     <Link
-                      to="#"
+                      to="/"
                       className="block px-4 py-2 text-sm text-white hover:bg-[#eeeeee57]"
+                      onClick={logOutHandler}
                     >
                       Log out
                     </Link>
@@ -129,6 +145,14 @@ const Navbar = () => {
                       className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
                     >
                       Add a New Book
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/wishlist"
+                      className="block py-2 pl-3 pr-4 border-b-2 border-b-[#0F15A2] md:bg-transparent md:p-0 text-[#ffffffb2] md:hover:text-white  md:focus:text-white md:hover:border-b-[#EEEEEE] md:focus:border-b-[#EEEEEE] text-xl"
+                    >
+                      Wishlist
                     </Link>
                   </li>
                 </>

@@ -13,7 +13,7 @@ const SignUp = () => {
     useCreateUserMutation();
   const navigate = useNavigate();
   if (isSuccess) {
-    toast.success("User sign Up Successfully!");
+    toast.success("user Registration successfully");
     navigate("/login");
   }
   const onSubmitHandler = async (data: IUser) => {

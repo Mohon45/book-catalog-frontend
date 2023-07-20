@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/require-await */
@@ -8,6 +9,7 @@ import { useForm } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useCreateBookMutation } from "../redux/books/bookApi";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 const cookies = new Cookies();
@@ -34,7 +36,10 @@ const AddBook = () => {
   const onSubmitHandler = async (data) => {
     data["publicationDate"] = date;
     data["author"] = userId;
-    await createBook(data);
+    const result = await createBook(data);
+    if (result?.data?.success) {
+      toast.success("New book created successfully");
+    }
   };
   return (
     <LoadingOverlay active={isLoading}>

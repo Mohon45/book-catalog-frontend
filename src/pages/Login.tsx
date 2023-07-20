@@ -6,6 +6,7 @@ import { useLoginUserMutation } from "../redux/user/userApi";
 import { useAppDispatch } from "../redux/hook";
 import { setUser } from "../redux/user/userSlice";
 import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
+import { toast } from "react-toastify";
 const Login = () => {
   interface ILogin {
     userName: string;
@@ -25,6 +26,7 @@ const Login = () => {
     });
     if (result?.data.success) {
       dispatch(setUser(result.data.data));
+      toast.success("User Login Success");
     }
   };
   return (

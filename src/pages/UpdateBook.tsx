@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   useGetSingleBookQuery,
   useUpdateBookMutation,
@@ -64,6 +65,7 @@ const UpdateBook = () => {
 
     console.log(result);
     if (result?.data?.success) {
+      toast.success("Book updated successfully");
       setLoading(false);
       navigate("/books");
     }

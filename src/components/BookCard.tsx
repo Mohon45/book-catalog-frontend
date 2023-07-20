@@ -1,12 +1,32 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Link } from "react-router-dom";
-import cardImage from "../assets/no-image.jpeg";
-
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
+import cardImage from "../assets/no-image.jpeg";
+import { useCreateWishListMutation } from "../redux/wishList/wishListApi";
+import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+const userId = cookies.get("id");
+
 const BookCard = ({ book }) => {
-  // console.log(book);
+  const [createWishList, { isLoading, isError, isSuccess }] =
+    useCreateWishListMutation();
+  const createHandler = async (bookId: string) => {
+    const data = {
+      book: bookId,
+      userId: userId,
+    };
+    const result = await createWishList(data);
+    if (result?.data?.success) {
+      toast.success("wishList created successfully");
+    } else {
+      toast.success("This Book is already in the list");
+    }
+  };
   return (
     <div>
       <div className="max-w-sm h-[400px] bg-white border border-gray-200 rounded-lg shadow">
@@ -37,7 +57,7 @@ const BookCard = ({ book }) => {
               <p className="mt-2">Publication Date : {book?.publicationDate}</p>
             </div>
           </div>
-          <div className="">
+          <div className="flex justify-between items-center">
             <Link
               to={`/book-details/${book._id}`}
               className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -59,6 +79,13 @@ const BookCard = ({ book }) => {
                 />
               </svg>
             </Link>
+            <Icon
+              className="cursor-pointer"
+              width="30px"
+              color="#1a56db"
+              icon="icon-park-solid:love-and-help"
+              onClick={() => createHandler(book?._id)}
+            />
           </div>
         </div>
       </div>
