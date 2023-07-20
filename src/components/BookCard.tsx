@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
@@ -8,11 +9,8 @@ import { Icon } from "@iconify/react";
 import cardImage from "../assets/no-image.jpeg";
 import { useCreateWishListMutation } from "../redux/wishList/wishListApi";
 import { toast } from "react-toastify";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
-const userId = cookies.get("id");
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, userId }) => {
   const [createWishList, { isLoading, isError, isSuccess }] =
     useCreateWishListMutation();
   const createHandler = async (bookId: string) => {
@@ -24,7 +22,7 @@ const BookCard = ({ book }) => {
     if (result?.data?.success) {
       toast.success("wishList created successfully");
     } else {
-      toast.success("This Book is already in the list");
+      toast.error("This Book is already in the list");
     }
   };
   return (
@@ -79,13 +77,15 @@ const BookCard = ({ book }) => {
                 />
               </svg>
             </Link>
-            <Icon
-              className="cursor-pointer"
-              width="30px"
-              color="#1a56db"
-              icon="icon-park-solid:love-and-help"
-              onClick={() => createHandler(book?._id)}
-            />
+            {userId && (
+              <Icon
+                className="cursor-pointer"
+                width="30px"
+                color="#1a56db"
+                icon="icon-park-solid:love-and-help"
+                onClick={() => createHandler(book?._id)}
+              />
+            )}
           </div>
         </div>
       </div>

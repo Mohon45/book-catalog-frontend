@@ -14,8 +14,12 @@ import {
 import { IBook } from "../type/globalTypes";
 import BookCard from "../components/BookCard";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { useEffect, useState } from "react";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const Books = () => {
+  const [userId, setUserId] = useState("");
   const years = Array.from({ length: 50 }, (_, index) => 2023 - index);
   const { data, isLoading, error } = useGetBooksQuery(undefined);
 
@@ -23,6 +27,11 @@ const Books = () => {
     (state) => state.book
   );
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    setInterval(() => {
+      setUserId(cookies.get("id"));
+    }, 500);
+  }, [data?.data]);
   let filtedData = null;
   const onSearchHandler = (e) => {
     if (e.target.name === "search") {
@@ -155,7 +164,7 @@ const Books = () => {
         </div>
         <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
           {filtedData?.map((book: IBook) => (
-            <BookCard book={book} />
+            <BookCard book={book} userId={userId} />
           ))}
         </div>
       </div>
